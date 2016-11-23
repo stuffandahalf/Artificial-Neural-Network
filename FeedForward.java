@@ -11,7 +11,7 @@ public class FeedForward
      */
 	public static void main (String args[]) throws IOException
     {
-        final String inputNumber = "numbers/0.png";
+        final String inputNumber = "numbers/9.png";
         final String hiddenWeightsFile = "hidden-weights.txt";
         final String outputWeightsFile = "output-weights.txt";
         
@@ -23,7 +23,7 @@ public class FeedForward
         int[] inputImage = new int[X.length];
         for(int i = 0; i < X.length; i++)
         {
-            if(X[i] == 0.0)
+            if(X[i] <= 150.0)
             {
                 inputImage[i] = 0;
             }
@@ -128,8 +128,7 @@ public class FeedForward
      */
     public static double function(double input)
     {
-        double output = 1.0/(1+Math.pow(Math.E, -1*input));
-        System.out.println(output);
+        double output = 1.0/(1 + Math.pow(Math.E, -1*input));
         return output;
     }
 }
