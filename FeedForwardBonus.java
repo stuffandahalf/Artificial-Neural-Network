@@ -32,8 +32,8 @@ public class FeedForwardBonus
             labels.add(line.split(" ")[0]);                                 // add the file name to the labels arraylist
             answers.add(line.split(" ")[1]);                                // and add the correct answer to the answers arraylist
         }
-        System.out.println(labels);
-        
+        //System.out.println(labels);
+        System.out.println("image\testimate\tsolution");
         for(int j = 0; j < labels.size(); j++)                              // run main method once for every image file
         {
             String inputNumber = "numbers/" + labels.get(j);                // create the number file name from the arraylist
@@ -57,7 +57,7 @@ public class FeedForwardBonus
             {
                 correct++;                                                  // increment the counter
             }
-            //System.out.println(j + "\t" + result + "\t" + answers.get(j));
+            System.out.println(j + "  \t" + result + "\t\t" + answers.get(j));
         }
         System.out.println(correct*1.0/answers.size());                     // print the percentage of correct values
     }
@@ -71,25 +71,24 @@ public class FeedForwardBonus
      */
     public static double[][] fileReader (String inputFile) throws IOException
     {
-        ArrayList<String[]> fileText = new ArrayList();
-        BufferedReader br = new BufferedReader(new FileReader(inputFile));
-        String line;
-        while((line = br.readLine()) != null)
+        ArrayList<String[]> fileText = new ArrayList();                     // arraylist to store the string arrays of the weights file
+        BufferedReader br = new BufferedReader(new FileReader(inputFile));  // create a bufferedreader object from the input file
+        String line;                                                        // a variable t ostore the line data
+        while((line = br.readLine()) != null)                               // until there are no more rows
         {
-            String[] lineArray = line.split(" ");
-            fileText.add(lineArray);
+            String[] lineArray = line.split(" ");                           // store a string array containing the values split by a space
+            fileText.add(lineArray);                                        // add the array to the arraylist
         }
-        String[][] fileTextArray = new String[fileText.size()][];
-        double[][] fileNumArray = new double[fileText.size()][fileText.get(0).length];
-        for(int i = 0; i < fileTextArray.length; i++)
+        double[][] fileNumArray = new double[fileText.size()][fileText.get(0).length];  // double array to store the double values
+        for(int i = 0; i < fileText.size(); i++)                            // for every sub array in the array
         {
-            for(int j = 0; j < fileText.get(0).length; j++)
+            for(int j = 0; j < fileText.get(0).length; j++)                 // for every value in the sub array
             {
-                fileNumArray[i][j] = Double.parseDouble(fileText.get(i)[j]);
+                fileNumArray[i][j] = Double.parseDouble(fileText.get(i)[j]);    // convert it into a double and store it in the new array
             }
         }
         
-        return fileNumArray;
+        return fileNumArray;                                                // return the converted double array
     }
     
     /**
@@ -100,17 +99,17 @@ public class FeedForwardBonus
      * @param array the array to search
      * @return the index of the largest attribute
      */
-    public static int indexOfLargest(double[] array)
+    public static int indexOfLargest (double[] array)
     {
-        int greatest = 0;
-        for(int i = 1; i < array.length; i++)
+        int greatest = 0;                                                   // variable to store the index of the greatest value
+        for(int i = 1; i < array.length; i++)                               // for every value in the array
         {
-            if(array[greatest] < array[i])
-            {
-                greatest = i;
+            if(array[greatest] < array[i])                                  // if the value at the current index is greater the the value
+            {                                                               // at the old index
+                greatest = i;                                               // set the greatest index to the current one
             }
         }
-        return greatest;
+        return greatest;                                                    // return the greatest index
     }
     
     /**
@@ -122,19 +121,19 @@ public class FeedForwardBonus
      * @param weights the weights for the next values
      * @return the next layer
      */
-    public static double[] nextLayer(double[] currentLayer, double[][] weights)
+    public static double[] nextLayer (double[] currentLayer, double[][] weights)
     {
-        double[] outputLayer = new double[weights.length];
-        for(int i = 0; i < weights.length; i++)
+        double[] outputLayer = new double[weights.length];                  // array to store the generated layer of values
+        for(int i = 0; i < weights.length; i++)                             // for every set of weights
         {
-            for(int j = 0; j < weights[0].length-1; j++)
+            for(int j = 0; j < weights[0].length-1; j++)                    // for every weight
             {
-                outputLayer[i] += currentLayer[j]*weights[i][j];
-            }
-            outputLayer[i] += weights[i][weights.length-1];
-            outputLayer[i] = function(outputLayer[i]);
+                outputLayer[i] += currentLayer[j]*weights[i][j];            // add the product of the current pixel times the weight
+            }                                                               // and add it to the current position in the layer
+            outputLayer[i] += weights[i][weights.length-1];                 // add the bias after all of the products have been added
+            outputLayer[i] = function(outputLayer[i]);                      // compute the result of the function using the number generated
         }
-        return outputLayer;
+        return outputLayer;                                                 // return the new layer
     }
     
     /**
@@ -143,10 +142,10 @@ public class FeedForwardBonus
      * @param input the number to put through the function
      * @return the result of the function
      */
-    public static double function(double input)
+    public static double function (double input)
     {
-        double output = 1.0/(1 + Math.pow(Math.E, -1*input));
-        return output;
+        double output = 1.0/(1 + Math.pow(Math.E, -1*input));               // the functino provided
+        return output;                                                      // return the result
     }
 }
 
