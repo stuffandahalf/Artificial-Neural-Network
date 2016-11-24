@@ -34,37 +34,32 @@ public class FeedForwardBonus
         }
         System.out.println(labels);
         
-        for(int j = 0; j < labels.size(); j++)
+        for(int j = 0; j < labels.size(); j++)                              // run main method once for every image file
         {
-            String inputNumber = "numbers/" + labels.get(j);
-            double[][] hiddenWeights = fileReader(hiddenWeightsFile);
-            double[][] outputWeights = fileReader(outputWeightsFile);
-            BufferedImage img = ImageIO.read(new File(inputNumber));
-            double[] dummy = null;
-            double[] X = img.getData().getPixels(0, 0, img.getWidth(), img.getHeight(), dummy);
-            int[] inputImage = new int[X.length];
-            for(int i = 0; i < X.length; i++)
+            String inputNumber = "numbers/" + labels.get(j);                // create the number file name from the arraylist
+            double[][] hiddenWeights = fileReader(hiddenWeightsFile);       // 2d array to store the hidden weights
+            double[][] outputWeights = fileReader(outputWeightsFile);       // 2d array to store the final weights
+            BufferedImage img = ImageIO.read(new File(inputNumber));        // create a BufferedImage object based on the file name
+            double[] dummy = null;                                          // dummy array for getting pixel data
+            double[] X = img.getData().getPixels(0, 0, img.getWidth(), img.getHeight(), dummy);     // getting the pixel data from the picture and storing it in an array X
+            for(int i = 0; i < X.length; i++)                               // for every value in the pixel data array
             {
-                if(X[i] == 0.0)
+                if(X[i] != 0.0)                                             // check if the pizel data is not 0
                 {
-                    inputImage[i] = 0;
-                }
-                else
-                {
-                    inputImage[i] = 1;
+                    X[i] = 1;                                               // set it to 1 if it is
                 }
             }
-            double[] hiddenLayer = nextLayer(X, hiddenWeights);
-            double[] outputLayer = nextLayer(hiddenLayer, outputWeights);
+            double[] hiddenLayer = nextLayer(X, hiddenWeights);             // run nextLayer method to generate the next layer from the weights and adjusted pixel data
+            double[] outputLayer = nextLayer(hiddenLayer, outputWeights);   // run the same method to go from the hidden layer to the output layer
             //System.out.println(Arrays.toString(outputLayer));
-            int result = indexOfLargest(outputLayer);
-            if(result == Integer.parseInt(answers.get(j)))
+            int result = indexOfLargest(outputLayer);                       // determine the index of the number it is most likely to be
+            if(result == Integer.parseInt(answers.get(j)))                  // if the result is the same as the one provided
             {
-                correct++;
+                correct++;                                                  // increment the counter
             }
             //System.out.println(j + "\t" + result + "\t" + answers.get(j));
         }
-        System.out.println(correct*1.0/answers.size());
+        System.out.println(correct*1.0/answers.size());                     // print the percentage of correct values
     }
     
     /**
