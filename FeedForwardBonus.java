@@ -25,6 +25,8 @@ public class FeedForwardBonus
         
         ArrayList<String> labels = new ArrayList();                         // ArrayList to store the filenames of the input images
         ArrayList<String> answers = new ArrayList();                        // ArrayList to store the correct outputs for the images
+        double[][] hiddenWeights = fileReader(hiddenWeightsFile);           // 2d array to store the hidden weights
+        double[][] outputWeights = fileReader(outputWeightsFile);           // 2d array to store the final weights
         BufferedReader br = new BufferedReader(new FileReader(labelsFile)); // a buffered reader object for reading the labels file
         String line;                                                        // a String variable to read each line into
         while((line = br.readLine()) != null)                               // while there are lines to read
@@ -32,13 +34,10 @@ public class FeedForwardBonus
             labels.add(line.split(" ")[0]);                                 // add the file name to the labels arraylist
             answers.add(line.split(" ")[1]);                                // and add the correct answer to the answers arraylist
         }
-        //System.out.println(labels);
         System.out.println("image\testimate\tsolution");
         for(int j = 0; j < labels.size(); j++)                              // run main method once for every image file
         {
             String inputNumber = "numbers/" + labels.get(j);                // create the number file name from the arraylist
-            double[][] hiddenWeights = fileReader(hiddenWeightsFile);       // 2d array to store the hidden weights
-            double[][] outputWeights = fileReader(outputWeightsFile);       // 2d array to store the final weights
             BufferedImage img = ImageIO.read(new File(inputNumber));        // create a BufferedImage object based on the file name
             double[] dummy = null;                                          // dummy array for getting pixel data
             double[] X = img.getData().getPixels(0, 0, img.getWidth(), img.getHeight(), dummy);     // getting the pixel data from the picture and storing it in an array X
@@ -64,10 +63,10 @@ public class FeedForwardBonus
     
     /**
      * Reads the provided file row by row and
-     * output it into an ArrayList
+     * outputs it into an ArrayList
      * 
      * @param inputFile  the file to read from
-     * @return the ArrayList filled with rows
+     * @return the 2d array of values
      */
     public static double[][] fileReader (String inputFile) throws IOException
     {
