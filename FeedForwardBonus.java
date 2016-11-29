@@ -43,10 +43,7 @@ public class FeedForwardBonus
             double[] X = img.getData().getPixels(0, 0, img.getWidth(), img.getHeight(), dummy);     // getting the pixel data from the picture and storing it in an array X
             for(int i = 0; i < X.length; i++)                               // for every value in the pixel data array
             {
-                if(X[i] != 0.0)                                             // check if the pizel data is not 0
-                {
-                    X[i] = 1;                                               // set it to 1 if it is
-                }
+                X[i] = X[i]/255 * 1.0;                                      // set the pixel value to be within 0 and 1 based on brightness
             }
             double[] hiddenLayer = nextLayer(X, hiddenWeights);             // run nextLayer method to generate the next layer from the weights and adjusted pixel data
             double[] outputLayer = nextLayer(hiddenLayer, outputWeights);   // run the same method to go from the hidden layer to the output layer
@@ -55,6 +52,12 @@ public class FeedForwardBonus
             if(result == Integer.parseInt(answers.get(j)))                  // if the result is the same as the one provided
             {
                 correct++;                                                  // increment the counter
+            }
+            
+            //print image number of incorrect prediction
+            if(result != Integer.parseInt(answers.get(j)))
+            {
+                System.out.println(j);
             }
             System.out.println(j + "  \t" + result + "\t\t" + answers.get(j));
         }
