@@ -12,14 +12,15 @@ public class FeedForwardBonus
      */
 	public static void main (String args[]) throws IOException
     {
-        //final String labelsFile = args[0];                                // variable to store filename of labels from command line
-        //final String hiddenWeightsFile = args[1];                         // variable to store hidden weights file from command line
-        //final String outputWeightsFile = args[2];                         // variable to store output weights file from command line
+        final String labelsFile = args[0];                                // variable to store filename of labels from command line
+        final String hiddenWeightsFile = args[1];                         // variable to store hidden weights file from command line
+        final String outputWeightsFile = args[2];                         // variable to store output weights file from command line
         
-                
+        /*
         final String labelsFile = "labels.txt";
         final String hiddenWeightsFile = "hidden-weights.txt";
         final String outputWeightsFile = "output-weights.txt";
+        */
         
         int correct = 0;                                                    // variable to store number of correct predictions
         
@@ -43,7 +44,7 @@ public class FeedForwardBonus
             double[] X = img.getData().getPixels(0, 0, img.getWidth(), img.getHeight(), dummy);     // getting the pixel data from the picture and storing it in an array X
             for(int i = 0; i < X.length; i++)                               // for every value in the pixel data array
             {
-                X[i] = X[i]/255 * 1.0;                                      // set the pixel value to be within 0 and 1 based on brightness
+                X[i] = X[i]/256;                                            // set the pixel value to be within 0 and 1
             }
             double[] hiddenLayer = nextLayer(X, hiddenWeights);             // run nextLayer method to generate the next layer from the weights and adjusted pixel data
             double[] outputLayer = nextLayer(hiddenLayer, outputWeights);   // run the same method to go from the hidden layer to the output layer
@@ -54,11 +55,6 @@ public class FeedForwardBonus
                 correct++;                                                  // increment the counter
             }
             
-            //print image number of incorrect prediction
-            if(result != Integer.parseInt(answers.get(j)))
-            {
-                System.out.println(j);
-            }
             System.out.println(j + "  \t" + result + "\t\t" + answers.get(j));
         }
         System.out.println(correct*1.0/answers.size());                     // print the percentage of correct values
@@ -132,7 +128,7 @@ public class FeedForwardBonus
             {
                 outputLayer[i] += currentLayer[j]*weights[i][j];            // add the product of the current pixel times the weight
             }                                                               // and add it to the current position in the layer
-            outputLayer[i] += weights[i][weights.length-1];                 // add the bias after all of the products have been added
+            outputLayer[i] += weights[i][weights[i].length-1];                 // add the bias after all of the products have been added
             outputLayer[i] = function(outputLayer[i]);                      // compute the result of the function using the number generated
         }
         return outputLayer;                                                 // return the new layer
@@ -146,7 +142,7 @@ public class FeedForwardBonus
      */
     public static double function (double input)
     {
-        double output = 1.0/(1 + Math.pow(Math.E, -1*input));               // the functino provided
+        double output = 1.0/(1 + Math.pow(Math.E, -1*input));               // the function provided
         return output;                                                      // return the result
     }
 }
